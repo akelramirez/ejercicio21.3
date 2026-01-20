@@ -46,3 +46,5 @@ Además de las vistas estáticas, ahora hay rutas que usan Express para renderiz
 - http://localhost:3000/bookDetail/:id -> vista renderizada server-side (detalle de libro), por ejemplo /bookDetail/3
 
 Estas rutas usan los mismos datos del modelo (`models/bookModel.js`) y los controladores en `controllers/bookController.js`.
+
+# Autor: Akel Ramirez Campo.
