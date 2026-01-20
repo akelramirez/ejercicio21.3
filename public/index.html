@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Buscador de libros</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <h1>Buscar libro por ID</h1>
+    <p>Usa el endpoint <code>/api/books/:id</code> (GET). Ejemplo: <code>/api/books/1</code></p>
+    <div>
+      <input id="bookId" type="number" placeholder="Ingresa id (1-10)" min="1" max="10" />
+      <button id="btn">Buscar</button>
+    </div>
+    <div id="out" class="result" aria-live="polite"></div>
+
+    <script>
+      const btn = document.getElementById('btn');
+      const out = document.getElementById('out');
+      btn.addEventListener('click', async () => {
+        const id = document.getElementById('bookId').value;
+        if(!id) { out.textContent = 'Ingresa un id válido.'; return; }
+        out.textContent = 'Cargando...';
+        try{
+          const res = await fetch(`/api/books/${id}`);
+          if(!res.ok){ out.textContent = 'Error en la petición: ' + res.status; return; }
+          const data = await res.json();
+          if(!data){ out.textContent = 'No se encontró el libro.'; return; }
+          out.innerHTML = `<strong>${data.title}</strong> — ${data.author} (${data.year})`;
+        }catch(err){ out.textContent = 'Error: ' + err.message; }
+      });
+    </script>
+  </body>
+</html>

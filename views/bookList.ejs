@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lista de libros (server)</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>Lista de libros</h1>
+      <p class="muted">Renderizado por Express + EJS</p>
+    </header>
+    <main>
+      <div class="card-grid">
+        <% if (!books || books.length === 0) { %>
+          <p>No hay libros.</p>
+        <% } else { %>
+          <% books.forEach(function(b){ %>
+            <article class="card">
+              <h3 class="card-title"><a href="/bookDetail/<%= b.id %>"><%= b.title %></a></h3>
+              <p class="muted"><%= b.author %> — <%= b.year %></p>
+            </article>
+          <% }) %>
+        <% } %>
+      </div>
+    </main>
+  </body>
+</html>

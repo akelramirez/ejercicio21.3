@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Lista de libros</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>Lista de libros</h1>
+      <p class="muted">API: <code>/api/bookList</code></p>
+    </header>
+
+    <main>
+      <div id="list" class="card-grid">Cargando...</div>
+    </main>
+
+    <script>
+      async function load(){
+        const listEl = document.getElementById('list');
+        try{
+          const res = await fetch('/api/bookList');
+          if(!res.ok) throw new Error('Estado '+res.status);
+          const books = await res.json();
+          if(!books || !books.length){ listEl.textContent = 'No hay libros.'; return; }
+          listEl.innerHTML = books.map(b=>`
+            <article class="card">
+              <h3 class="card-title"><a href="/bookDetail.html?id=${b.id}">${escapeHtml(b.title)}</a></h3>
+              <p class="muted">${escapeHtml(b.author)} — ${b.year}</p>
+            </article>
+          `).join('');
+        }catch(e){ listEl.textContent = 'Error cargando la lista: ' + e.message }
+      }
+
+      // simple escape
+      function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+
+      load();
+    </script>
+  </body>
+</html>

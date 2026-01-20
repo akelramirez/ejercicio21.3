@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title><%= book.title %> — Detalle</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <a class="back" href="/bookList">← Volver a la lista</a>
+    <main class="detail-card">
+      <h2><%= book.title %></h2>
+      <p><strong>Autor:</strong> <%= book.author %></p>
+      <p><strong>Año:</strong> <%= book.year %></p>
+      <p><strong>ID:</strong> <%= book.id %></p>
+    </main>
+  </body>
+</html>

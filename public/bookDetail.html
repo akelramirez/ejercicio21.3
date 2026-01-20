@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Detalle del libro</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <a class="back" href="/bookList.html">← Volver a la lista</a>
+
+    <main class="detail-card">
+      <div id="out">Cargando...</div>
+    </main>
+
+    <script>
+      function getQuery(){ return Object.fromEntries(new URLSearchParams(location.search)); }
+      async function load(){
+        const q = getQuery();
+        const id = q.id;
+        const out = document.getElementById('out');
+        if(!id){ out.textContent = 'Falta id en la URL.'; return; }
+        try{
+          const res = await fetch(`/api/books/${id}`);
+          if(!res.ok) { out.textContent = 'Error en la petición: ' + res.status; return; }
+          const b = await res.json();
+          if(!b){ out.textContent = 'No se encontró el libro.'; return; }
+          out.innerHTML = `
+            <h2>${escapeHtml(b.title)}</h2>
+            <p><strong>Autor:</strong> ${escapeHtml(b.author)}</p>
+            <p><strong>Año:</strong> ${b.year}</p>
+            <p><strong>ID:</strong> ${b.id}</p>
+          `;
+        }catch(e){ out.textContent = 'Error: ' + e.message }
+      }
+
+      function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+
+      load();
+    </script>
+  </body>
+</html>
